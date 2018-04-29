@@ -1,0 +1,76 @@
+#validation
+framework:
+  carValidation:
+    canBeMultiThreaded: true
+    commands: 
+      - description: Type
+        inParallel: true
+        validations:
+          basic:
+            type: String
+            format: '^[a-zA-Z0-9 -]+'
+          custom:
+            - null
+
+      - description: Make
+        inParallel: true
+        validations:
+          basic:
+            type: String
+            format: '^[a-zA-Z0-9 -]+'
+          custom:
+            - null
+
+      - description: Model
+        inParallel: true
+        validations:
+          basic:
+            type: String
+            format: '^[a-zA-Z0-9 -]+'
+          custom:
+            - null
+
+      - description: Trim
+        inParallel: true
+        validations:
+          basic:
+            type: String
+            format: '^[a-zA-Z0-9 -]+'
+          custom:
+            - null
+
+      - description: Year
+        inParallel: true
+        validations:
+          basic:
+            type: Integer
+            format: '[0-9]{4}'
+          custom:
+            - null
+
+      - description: StreetSave
+        inParallel: true
+        validations:
+          basic:
+            type: Boolean
+            format: null
+          custom:
+            - null
+
+      - description: Electric
+        inParallel: false
+        validations:
+          basic:
+            type: Boolean
+            format: null
+          custom:
+            - null
+
+      - description: Range
+        inParallel: false
+        validations:
+          basic:
+            type: Integer
+            format: '[0-9]{1,8}'
+          custom:
+            - null
