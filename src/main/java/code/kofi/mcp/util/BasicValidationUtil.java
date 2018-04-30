@@ -10,31 +10,20 @@ public class BasicValidationUtil {
 
     public static Boolean validateDataType(String data, String type){
 
-        switch( type ){
-
-            case "String":
-                return data instanceof String;
-            case "Integer":
-                try{ 
-                    return Integer.valueOf( data ) instanceof Integer;
-                } catch(NumberFormatException exception){
-                    exception.printStackTrace();
-                }
-            case "Boolean":
-                try{ 
-                    return Boolean.valueOf( data ) instanceof Boolean;
-                } catch(NumberFormatException exception){
-                    exception.printStackTrace();
-                }
-            default:
-                break;
+        if( type.equals("Integer") ){
+            try{
+                return Integer.valueOf(data) instanceof Integer;
+            }catch (NumberFormatException ex){
+                ex.printStackTrace();
+                return false;
+            }
         }
-        
-        return false;
+        else return true;
+
     }
 
     public static Boolean validateFormat(String data, String format){
-        return !format.isEmpty() ? data.matches(format) : true;
+        return data.matches(format);
     }
     
 }

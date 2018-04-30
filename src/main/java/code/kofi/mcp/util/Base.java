@@ -2,7 +2,7 @@ package code.kofi.mcp.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +34,6 @@ public class Base {
 
     public static void putValueInListMap(Integer key, String value, Map<Integer,List<String>> map){
         if( map.containsKey(key) ) map.get(key).add(value);
-        else map.put(key, Arrays.asList(value));
+        else map.put(key, Collections.singletonList(value));
     }
 }

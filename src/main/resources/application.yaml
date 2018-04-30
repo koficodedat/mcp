@@ -53,7 +53,7 @@ framework:
         validations:
           basic:
             type: Boolean
-            format: null
+            format: '(\bYES\b|\bNO\b|\bTRUE\b|\bFALSE\b){1}'
           custom:
             - null
 
@@ -62,7 +62,7 @@ framework:
         validations:
           basic:
             type: Boolean
-            format: null
+            format: '(\bYES\b|\bNO\b|\bTRUE\b|\bFALSE\b){1}'
           custom:
             - null
 
