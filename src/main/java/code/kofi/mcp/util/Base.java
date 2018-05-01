@@ -15,14 +15,17 @@ import code.kofi.mcp.dto.Car;
 
 public class Base {
 
-    public static List<Car> buildCarListFromFile(MultipartFile file){
+    public static Car[] buildCarListFromFile(MultipartFile file){
 
         if( !file.isEmpty() ){
             try{
 
                 byte[] fileInBytes = file.getBytes();
                 InputStream inputStream =  new ByteArrayInputStream(fileInBytes);
-                return Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, Car.class);
+
+                List<Car> cars = Poiji.fromExcel(inputStream, PoijiExcelType.XLSX, Car.class);
+
+                return cars.stream().toArray(Car[]::new);
 
             }catch(Exception ex){
                 ex.printStackTrace();
@@ -30,10 +33,5 @@ public class Base {
         }
         
         return null;
-    }
-
-    public static void putValueInListMap(Integer key, String value, Map<Integer,List<String>> map){
-        if( map.containsKey(key) ) map.get(key).add(value);
-        else map.put(key, Collections.singletonList(value));
     }
 }

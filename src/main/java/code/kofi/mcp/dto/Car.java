@@ -5,9 +5,11 @@ import com.poiji.annotation.ExcelRow;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 @Getter
 @EqualsAndHashCode
+@Component
 public class Car {
     @ExcelRow
     private int row;
