@@ -1,15 +1,12 @@
 package code.kofi.mcp.conifg;
 
-import org.springframework.stereotype.Component;
-
 import code.kofi.mcp.dto.CarValidation;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.EqualsAndHashCode;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Setter

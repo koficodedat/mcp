@@ -2,6 +2,7 @@ package code.kofi.mcp.service;
 
 import code.kofi.mcp.constant.CarType;
 import code.kofi.mcp.dto.Basic;
+import code.kofi.mcp.util.BasicValidationUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,8 +25,8 @@ public class ValidateType extends Validation{
 	@Override
 	public String executeBasic(String column, String value, Basic basic) {
 		super.executeBasic(column, value, basic);
-//		if( !BasicValidationUtil.validateDescription( value, carTypes ) )
-//			Base.putValueInListMap(row, column + ": has Invalid Description", map);
+
+		if( !BasicValidationUtil.validateDescription( value, carTypes ) ) return column + ": has Invalid Description";
 
 		return null;
 	}

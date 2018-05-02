@@ -5,7 +5,6 @@ import code.kofi.mcp.dto.Car;
 import javafx.util.Pair;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,14 +16,18 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collector;
 
-@Service
-@Configurable
 @NoArgsConstructor
+@Service
 public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<String>>> > {
 
     private static final int THRESHOLD = 10;
 
     private Car[] cars;
+
+    public BasicValidationTask setCars(Car[] cars) {
+        this.cars = cars;
+        return this;
+    }
 
     @Autowired
     private ValidationFramework framework;
@@ -45,10 +48,10 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
     @Autowired
     private ValidateRange validateRange;
 
-    @Autowired
-    public BasicValidationTask(Car[] cars){
-        this.cars = cars;
-    }
+
+//    public BasicValidationTask(Car[] cars){
+//        this.cars = cars;
+//    }
 
     @Override
     protected List<Pair<Integer,List<String>>> compute() {
@@ -67,8 +70,8 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
     private Collection<BasicValidationTask> createSubTask() {
         List<BasicValidationTask> dividedTask = new ArrayList<>();
 
-        dividedTask.add( new BasicValidationTask( Arrays.copyOfRange( this.cars, 0, this.cars.length / 2 ) ) );
-        dividedTask.add( new BasicValidationTask( Arrays.copyOfRange( this.cars, this.cars.length / 2, this.cars.length ) ) );
+        dividedTask.add( new BasicValidationTask().setCars( Arrays.copyOfRange( this.cars, 0, this.cars.length / 2 ) ) );
+        dividedTask.add( new BasicValidationTask().setCars( Arrays.copyOfRange( this.cars, this.cars.length / 2, this.cars.length )  ) );
 
         return dividedTask;
     }
@@ -83,8 +86,6 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
                 .forEachOrdered(
                         car -> {
                             List<Callable<String>> callables = new ArrayList<>();
-
-                            System.out.println("#########" + this.framework + "#################");
 
                             this.framework.getCarValidation().getCommands()
                                     .forEach(

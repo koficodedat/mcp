@@ -3,6 +3,7 @@ package code.kofi.mcp.controller;
 import code.kofi.mcp.dto.Car;
 import code.kofi.mcp.service.BasicValidationTask;
 import javafx.util.Pair;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +21,8 @@ public class Framework {
 
     private final static int cores = 4;
 
-//    @Autowired
-//    private BasicValidationTask basicValidationTask;
+    @Autowired
+    private BasicValidationTask basicValidationTask;
 
     @SuppressWarnings("SameReturnValue")
     @GetMapping("/")
@@ -41,10 +42,13 @@ public class Framework {
                     () -> {
 
                         ForkJoinPool pool = new ForkJoinPool( cores );
-                        BasicValidationTask basicValidationTask = new BasicValidationTask( cars );
 
                         try {
-                            pool.submit( basicValidationTask ).get();
+                            System.out.println("##############");
+                            List<Pair<Integer,List<String>>> result = pool.submit( basicValidationTask.setCars( cars ) ).get();
+                            System.out.println("result: " + result);
+                            System.out.println("##############");
+                            return result;
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
