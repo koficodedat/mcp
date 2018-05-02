@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static code.kofi.mcp.util.Base.buildCarListFromFile;
 
@@ -23,6 +20,8 @@ public class Framework {
 
     @Autowired
     private BasicValidationTask basicValidationTask;
+
+    private ForkJoinPool pool = new ForkJoinPool( cores );
 
     @SuppressWarnings("SameReturnValue")
     @GetMapping("/")
@@ -41,14 +40,17 @@ public class Framework {
                 .supplyAsync(
                     () -> {
 
-                        ForkJoinPool pool = new ForkJoinPool( cores );
-
                         try {
+
                             System.out.println("##############");
-                            List<Pair<Integer,List<String>>> result = pool.submit( basicValidationTask.setCars( cars ) ).get();
+                            List<Pair<Integer,List<String>>> result = pool.submit( this.basicValidationTask.setCars( cars ) ).get();
                             System.out.println("result: " + result);
                             System.out.println("##############");
+
+                            this.basicValidationTask.clearCars();
+
                             return result;
+
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }

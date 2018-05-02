@@ -33,6 +33,11 @@ repositories {
 	maven { url "https://repo.spring.io/milestone" }
 }
 
+configurations {
+	optional
+	compile.extendsFrom optional
+}
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-aop')
@@ -41,7 +46,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('com.github.ozlerhakan:poiji:1.11')
 	runtime('org.springframework.boot:spring-boot-devtools')
+	optional('org.springframework.boot:spring-boot-configuration-processor')
 	compileOnly('org.projectlombok:lombok')
-	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
