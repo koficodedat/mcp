@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Service
@@ -107,7 +108,9 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
 
         root.forEach( validateBasic -> pairs.add( new Pair<>( pairs.size() + 1, validateBasic.run() ) ) );
 
-        return pairs;
+        return pairs.stream()
+            .filter( pair -> pair.getValue().size() > 0 )
+            .collect( Collectors.toList() );
     }
 
 }

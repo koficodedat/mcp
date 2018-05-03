@@ -29,9 +29,9 @@ public class TestBench {
             .setIsElectric(isElectric);
     }
 
-    public static List<Car> getCars(){
+    public static Car[] getCars(){
 
-        Car[] cars = new Car[]{
+        return new Car[]{
             getCar("coup", "bmw", "m3", "mid", "2015", "230", "true", "false"),
             getCar("sedan", "audi", "a3", "mid", "2017", "350", "yes", "no"),
             getCar("sedan", "tesla", "model 3", "lux", "2018", "250", "yes", "yes"),
@@ -41,8 +41,6 @@ public class TestBench {
             getCar("ewd", "range rover", "sport", "lux", "2018", "250", "yes", ""),
             getCar("gibberish", "bmw", "m4", "basic", "2015", "230", "yes", "no")
         };
-
-        return Arrays.stream( cars ).collect( Collectors.toList() );
 
     }
 }

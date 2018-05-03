@@ -14,7 +14,6 @@ public class BasicValidationUtil {
             try{
                 return Integer.valueOf(data) instanceof Integer;
             }catch (NumberFormatException ex){
-                ex.printStackTrace();
                 return false;
             }
         }
