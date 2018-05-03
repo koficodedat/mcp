@@ -4,14 +4,12 @@ import code.kofi.mcp.conifg.ValidationFramework;
 import code.kofi.mcp.dto.Car;
 import javafx.util.Pair;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collector;
@@ -24,34 +22,16 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
 
     private Car[] cars;
 
+    private ValidationFramework framework;
+
+    public BasicValidationTask(ValidationFramework framework){
+        this.framework = framework;
+    }
+
     public BasicValidationTask setCars(Car[] cars) {
         this.cars = cars;
         return this;
     }
-
-    @Autowired
-    private ValidationFramework framework;
-    @Autowired
-    private ValidateType validateType;
-    @Autowired
-    private ValidateMake validateMake;
-    @Autowired
-    private ValidateModel validateModel;
-    @Autowired
-    private ValidateTrim validateTrim;
-    @Autowired
-    private ValidateYear validateYear;
-    @Autowired
-    private ValidateStreetSave validateStreetSave;
-    @Autowired
-    private ValidateElectric validateElectric;
-    @Autowired
-    private ValidateRange validateRange;
-
-
-//    public BasicValidationTask(Car[] cars){
-//        this.cars = cars;
-//    }
 
     @Override
     protected List<Pair<Integer,List<String>>> compute() {
@@ -70,50 +50,49 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
     private Collection<BasicValidationTask> createSubTask() {
         List<BasicValidationTask> dividedTask = new ArrayList<>();
 
-        dividedTask.add( new BasicValidationTask().setCars( Arrays.copyOfRange( this.cars, 0, this.cars.length / 2 ) ) );
-        dividedTask.add( new BasicValidationTask().setCars( Arrays.copyOfRange( this.cars, this.cars.length / 2, this.cars.length )  ) );
+        dividedTask.add( new BasicValidationTask( framework ).setCars( Arrays.copyOfRange( this.cars, 0, this.cars.length / 2 ) ) );
+        dividedTask.add( new BasicValidationTask( framework ).setCars( Arrays.copyOfRange( this.cars, this.cars.length / 2, this.cars.length )  ) );
 
         return dividedTask;
     }
 
     private List<Pair<Integer,List<String>>> process(Car[] cars){
 
-
         List<Pair<Integer,List<String>>> pairs = new ArrayList<>();
-        List<List<Callable<String>>> rootCallables = new ArrayList<>();
+        List<ValidateBasic> root = new ArrayList<>();
 
         Arrays.stream( cars )
                 .forEachOrdered(
                         car -> {
-                            List<Callable<String>> callables = new ArrayList<>();
+                            ValidateBasic validateBasic = new ValidateBasic();
 
                             this.framework.getCarValidation().getCommands()
                                     .forEach(
                                             command -> {
                                                 switch (command.getDescription()){
                                                     case "Type":
-                                                        callables.add( () -> validateType.executeBasic( command.getDescription(), car.getType(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getType(), command.getValidations().getBasic(), new ValidateType() ).execute() );
                                                         break;
                                                     case "Make":
-                                                        callables.add( () -> validateMake.executeBasic( command.getDescription(), car.getMake(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getMake(), command.getValidations().getBasic(), new ValidateMake() ).execute() );
                                                         break;
                                                     case "Model":
-                                                        callables.add( () -> validateModel.executeBasic( command.getDescription(), car.getModel(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getModel(), command.getValidations().getBasic(), new ValidateModel() ).execute() );
                                                         break;
                                                     case "Trim":
-                                                        callables.add( () -> validateTrim.executeBasic( command.getDescription(), car.getTrim(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getTrim(), command.getValidations().getBasic(), new ValidateTrim() ).execute() );
                                                         break;
                                                     case "Year":
-                                                        callables.add( () -> validateYear.executeBasic( command.getDescription(), car.getYear(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getYear(), command.getValidations().getBasic(), new ValidateYear() ).execute() );
                                                         break;
                                                     case "StreetSave":
-                                                        callables.add( () -> validateStreetSave.executeBasic( command.getDescription(), car.getIsStreetSave(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getIsStreetSave(), command.getValidations().getBasic(), new ValidateStreetSave() ).execute() );
                                                         break;
                                                     case "Electric":
-                                                        callables.add( () -> validateElectric.executeBasic( command.getDescription(), car.getIsElectric(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getIsElectric(), command.getValidations().getBasic(), new ValidateElectric() ).execute() );
                                                         break;
                                                     case "Range":
-                                                        callables.add( () -> validateRange.executeBasic( command.getDescription(), car.getRange(), command.getValidations().getBasic() ) );
+                                                        validateBasic.addCommand( () -> new BasicCommand<>( command.getDescription(), car.getRange(), command.getValidations().getBasic(), new ValidateRange() ).execute() );
                                                         break;
                                                     default:
                                                         break;
@@ -121,28 +100,14 @@ public class BasicValidationTask extends RecursiveTask< List<Pair<Integer,List<S
                                             }
                                     );
 
-                            rootCallables.add(callables);
+                            root.add(validateBasic);
                         }
                 );
 
-        rootCallables
-                .forEach(
-                        callables -> {
-                            List<String> strings = new ArrayList<>();
-                            pairs.add( new Pair<>( pairs.size() + 1, strings ) );
 
-                            callables.forEach( callable -> callValidation(strings, callable) );
-                        }
-                );
+        root.forEach( validateBasic -> pairs.add( new Pair<>( pairs.size() + 1, validateBasic.run() ) ) );
 
         return pairs;
     }
 
-    private void callValidation(List<String> strings, Callable<String> callable) {
-        try {
-            strings.add( callable.call() );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

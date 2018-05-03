@@ -1,5 +1,6 @@
 package code.kofi.mcp.controller;
 
+import code.kofi.mcp.conifg.ValidationFramework;
 import code.kofi.mcp.dto.Car;
 import code.kofi.mcp.service.BasicValidationTask;
 import javafx.util.Pair;
@@ -18,10 +19,10 @@ public class Framework {
 
     private final static int cores = 4;
 
-    @Autowired
-    private BasicValidationTask basicValidationTask;
-
     private ForkJoinPool pool = new ForkJoinPool( cores );
+
+    @Autowired
+    private ValidationFramework framework;
 
     @SuppressWarnings("SameReturnValue")
     @GetMapping("/")
@@ -38,25 +39,7 @@ public class Framework {
 
             return CompletableFuture
                 .supplyAsync(
-                    () -> {
-
-                        try {
-
-                            System.out.println("##############");
-                            List<Pair<Integer,List<String>>> result = pool.submit( this.basicValidationTask.setCars( cars ) ).get();
-                            System.out.println("result: " + result);
-                            System.out.println("##############");
-
-                            this.basicValidationTask.clearCars();
-
-                            return result;
-
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        }
-
-                        return null;
-                    }
+                    () -> pool.invoke( new BasicValidationTask( this.framework ).setCars( cars ) )
                 );
 
         }
