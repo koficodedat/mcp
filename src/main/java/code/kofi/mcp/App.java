@@ -20,7 +20,7 @@ public class App{
 	@SuppressWarnings("SameReturnValue")
 	@GetMapping("/")
 	public String description(){
-		return "Welcome to Multi Command Processing";
+		return "Welcome to Multi Validation command Processing";
 	}
 	
 }

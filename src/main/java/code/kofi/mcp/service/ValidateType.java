@@ -2,6 +2,7 @@ package code.kofi.mcp.service;
 
 import code.kofi.mcp.constant.CarType;
 import code.kofi.mcp.dto.Basic;
+import code.kofi.mcp.dto.Validations;
 import code.kofi.mcp.util.BasicValidationUtil;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class ValidateType extends Validation{
+public class ValidateType extends Validate {
 
 	private static final List<String> carTypes = Arrays
 	.stream(
@@ -23,15 +24,11 @@ public class ValidateType extends Validation{
 	.collect( Collectors.toList() );
 
 	@Override
-	public String executeBasic(String column, String value, Basic basic) {
-		super.executeBasic(column, value, basic);
+	public String executeBasic( String column, String value, Validations validations ) {
 
-		if( !BasicValidationUtil.validateDescription( value, carTypes ) ) return column + ": has Invalid Description";
-
-		return null;
+		String superString = super.executeBasic(column, value, validations);
+		if( superString == null && !BasicValidationUtil.validateDescription( value, carTypes ) ) return column + ": has Invalid Description";
+		return superString;
 	}
-
-	@Override
-	public String  executeCustom( String column ) { return null; }
 
 }

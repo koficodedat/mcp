@@ -1,8 +1,9 @@
 #validation
 framework:
   carValidation:
+    returnOnStepError: false
     canBeMultiThreaded: true
-    commands: 
+    validationCommands:
       - description: Type
         inParallel: true
         validations:
@@ -58,16 +59,16 @@ framework:
             - null
 
       - description: Electric
-        inParallel: false
+        inParallel: true
         validations:
           basic:
             type: Boolean
             format: '(\bYES\b|\bNO\b|\bTRUE\b|\bFALSE\b){1}'
           custom:
-            - null
+            - 'VERIFY_ELECTRIC'
 
       - description: Range
-        inParallel: false
+        inParallel: true
         validations:
           basic:
             type: Integer

@@ -12,6 +12,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 public class CarValidation {
+    private Boolean returnOnStepError;
     private Boolean canBeMultiThreaded;
-    private Set<Command> commands;
+    private Set<ValidationCommand> validationCommands;
 }

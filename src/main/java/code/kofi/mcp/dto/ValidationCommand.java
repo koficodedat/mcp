@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class Command {
+public class ValidationCommand {
     private String description;
     private Boolean inParallel;
     private Validations validations;

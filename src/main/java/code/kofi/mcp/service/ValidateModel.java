@@ -3,9 +3,4 @@ package code.kofi.mcp.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ValidateModel extends Validation{
-
-	@Override
-	public String executeCustom(String column) { return null; }
-
-}
+public class ValidateModel extends Validate {}

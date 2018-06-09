@@ -1,17 +1,17 @@
 package code.kofi.mcp.service;
 
-import code.kofi.mcp.service.command.BasicCommand;
+import code.kofi.mcp.service.command.CustomCommand;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValidateBasic {
+public class ValidateCustom {
 
-    private List<BasicCommand> commands;
+    private List<CustomCommand> commands;
 
-    public ValidateBasic(){ this.commands = new ArrayList<>(); }
+    public ValidateCustom(){ this.commands = new ArrayList<>(); }
 
-    public void addCommand(BasicCommand command){
+    public void addCommand(CustomCommand command){
         this.commands.add( command );
     }
 
