@@ -7,11 +7,11 @@ import java.util.List;
 
 public class ValidateCustom {
 
-    private List<CustomCommand> commands;
+    private List< CustomCommand<List<String>, Validate> > commands;
 
     public ValidateCustom(){ this.commands = new ArrayList<>(); }
 
-    public void addCommand(CustomCommand command){
+    public void addCommand(CustomCommand<List<String>, Validate> command){
         this.commands.add( command );
     }
 
@@ -21,8 +21,8 @@ public class ValidateCustom {
         this.commands
                 .forEach(
                         command -> {
-                            String value = command.execute();
-                            if( value != null ) values.add( value );
+                            List<String> value = command.execute();
+                            if( value != null ) values.addAll( value );
                         }
                 );
 

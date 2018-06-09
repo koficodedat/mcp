@@ -14,5 +14,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode
 public class Validations {
     private Basic basic;
-    private Set<String> custom;
+    private String[] custom;
 }

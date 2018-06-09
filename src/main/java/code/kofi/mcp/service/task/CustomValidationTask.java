@@ -71,28 +71,28 @@ public class CustomValidationTask extends RecursiveTask< Map<Integer,List<String
                                             command -> {
                                                 switch (command.getDescription()){
                                                     case "Type":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getType(), command.getValidations(), new ValidateType() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateType() ) );
                                                         break;
                                                     case "Make":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getMake(), command.getValidations(), new ValidateMake() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateMake() ) );
                                                         break;
                                                     case "Model":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getModel(), command.getValidations(), new ValidateModel() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateModel() ) );
                                                         break;
                                                     case "Trim":
-                                                        validateCustom.addCommand(  new CustomCommand<>( command.getDescription(), car.getTrim(), command.getValidations(), new ValidateTrim() ) );
+                                                        validateCustom.addCommand(  new CustomCommand<>( car, command.getValidations(), new ValidateTrim() ) );
                                                         break;
                                                     case "Year":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getYear(), command.getValidations(), new ValidateYear() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateYear() ) );
                                                         break;
                                                     case "StreetSave":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getIsStreetSave(), command.getValidations(), new ValidateStreetSave() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateStreetSave() ) );
                                                         break;
                                                     case "Electric":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getIsElectric(), command.getValidations(), new ValidateElectric() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateElectric() ) );
                                                         break;
                                                     case "Range":
-                                                        validateCustom.addCommand( new CustomCommand<>( command.getDescription(), car.getRange(), command.getValidations(), new ValidateRange() ) );
+                                                        validateCustom.addCommand( new CustomCommand<>( car, command.getValidations(), new ValidateRange() ) );
                                                         break;
                                                     default:
                                                         break;

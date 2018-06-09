@@ -1,10 +1,15 @@
 package code.kofi.mcp.service;
 
-import code.kofi.mcp.dto.Basic;
-import code.kofi.mcp.dto.ValidationCommand;
+import code.kofi.mcp.constant.CustomRules;
+import code.kofi.mcp.dto.Car;
 import code.kofi.mcp.dto.Validations;
 import code.kofi.mcp.util.BasicValidationUtil;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class Validate implements IValidate {
@@ -22,6 +27,16 @@ public class Validate implements IValidate {
     }
 
     @Override
-    public String executeCustom( String column, String value, Validations validations ) { return null; };
+    public List<String> executeCustom(Car car, Validations validations ) {
+
+        String[] customValidations = validations.getCustom();
+
+        return Arrays.stream(customValidations)
+                .parallel()
+                .filter( rule -> !rule.equals("") )
+                .map( rule -> CustomRules.valueOf( rule ).getFunction().apply(car) )
+                .filter( Objects::nonNull )
+                .collect(Collectors.toList());
+    }
 
 }

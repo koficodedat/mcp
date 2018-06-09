@@ -74,4 +74,4 @@ framework:
             type: Integer
             format: '[0-9]{1,8}'
           custom:
-            - null
+            - 'VERIFY_RANGE'
