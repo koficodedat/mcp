@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class BasicValidationTask extends RecursiveTask< Map<Integer,List<String>> > {
 
-    private static final int THRESHOLD = 5;
+    private static final int THRESHOLD = 100;
 
     private Car[] cars;
 
